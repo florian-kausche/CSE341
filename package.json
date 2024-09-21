@@ -1,0 +1,19 @@
+{
+  "name": "cse341-project",
+  "version": "1.0.0",
+  "description": "My first project",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/florian-kausche/CSE341-project.git"
+  },
+  "author": "Florian Adu Kausche",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/florian-kausche/CSE341-project/issues"
+  },
+  "homepage": "https://github.com/florian-kausche/CSE341-project#readme"
+}
