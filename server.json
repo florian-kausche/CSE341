@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/florian-kausche/CSE341-project/issues"
   },
-  "homepage": "https://github.com/florian-kausche/CSE341-project#readme"
+  "homepage": "https://github.com/florian-kausche/CSE341-project#readme",
+  "dependencies": {
+    "express": "^4.21.0"
+  }
 }
