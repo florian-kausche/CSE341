@@ -1,10 +1,19 @@
 const express = require('express');
+
+const mongodb = require('./data/database');
 const app = express();
 const port = process.env.PORT || 3000;
-const routes = require('./routes'); // Correctly requiring routes
 
-app.use('/', routes); // Use routes as middleware
+app.use('/', require('./routes')); // Use routes as middleware
 
-app.listen(port, () => {
-  console.log(`running on port ${port}`);
+
+
+mongodb.initDb((err) => {
+  if(err) {
+    console.log(err)
+  }
+  else {
+    app.listen(port, () => {
+      console.log(`Database is listening and node is running on port ${port}`)});
+  }
 });
