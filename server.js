@@ -6,8 +6,6 @@ const port = process.env.PORT || 3000;
 
 app.use('/', require('./routes')); // Use routes as middleware
 
-
-
 mongodb.initDb((err) => {
   if(err) {
     console.log(err)
