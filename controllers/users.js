@@ -1,6 +1,8 @@
 const mongodb = require('../data/database');
 const objectId = require('mongodb').objectId;
 
+
+
 const getAll = async (req, res) => {
     const result = await mongodb.getDatabase().collection('users').find();
     result.toArray().then((users) => {
