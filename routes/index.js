@@ -6,6 +6,6 @@ const router = express.Router();
 // Define routes here
 router.get('/', (req, res) => res.send('Hello World'));
 
-router.use('/users', require('./users')); // Load 'users' routes
+router.use('/contacts', require('./contacts')); // Load 'contacts' routes
 
 module.exports = router;
