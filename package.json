@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/florian-kausche/CSE341-project#readme",
   "dependencies": {
+    "body-parser": "^1.20.3",
     "devenv": "^1.0.1",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",

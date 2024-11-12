@@ -1,0 +1,32 @@
+# GET Request
+GET http://localhost:3000/contacts
+
+
+### GET Request by ID
+GET http://localhost:3000/contacts/66fac66b11c9dbad569664c3
+
+
+### POST Request (Create a contact)
+POST http://localhost:3000/contacts
+Content-Type: application/json
+
+{
+    "firstName": "Francis",
+    "lastName": "Yeboah",
+    "email": "samuel.agyekum@example.com",
+    "favoriteColor": "green",
+    "birthdate": "1969-04-10"
+}
+
+
+### PUT Request (Update a contact)
+PUT http://localhost:3000/contacts/66fac66b11c9dbad569664c3
+Content-Type: application/json
+
+{
+    "firstName": "Yao",
+    "lastName": "Nguessan",
+    "email": "daniel.kwamena@example.com",
+    "favoriteColor": "yellow",
+    "birthdate": "1979-08-21"
+}
