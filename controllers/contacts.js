@@ -40,12 +40,12 @@ const CreateContact = async (req, res) => {
         birthday: req.body.birthday
     };
     // Replace a document in the 'contacts' collection with the given contact object.
-    const response = await mongodb.getDatabase().db().collection('contacts').replaceOne({ _id: contactId }, contact);
+    const response = await mongodb.getDatabase().collection('contacts').insertOne({ _id: contactId }, contact);
     // Check if the operation was acknowledged and respond accordingly.
-    if (response.acknowledged > 0) {
-        res.status(204).send(); // Respond with status 204 (no content) if successful.
+    if (response.acknowledged) {
+        res.status(201).json(contact);  // Respond with status 201 (created).
     } else {
-        res.status(500).json(response.console.error || 'Some error occurred while updating the contact'); // Respond with status 500 if there was an error.
+        res.status(500).json('Some error occurred while creating the contact');
     }
 };
 
@@ -57,16 +57,16 @@ const UpdateContact = async (req, res) => {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
-        name: req.body.name,
-        Ipaddress: req.body.Ipaddress
+        favoriteColor: req.body.favoriteColor,
+        birthday: req.body.birthday
     };
     // Replace a document in the 'contacts' collection with the updated contact object.
-    const response = await mongodb.getDatabase().db().collection('contacts').replaceOne({ _id: contactId }, contact);
+    const response = await mongodb.getDatabase().collection('contacts').updateOne({ $set: contact } );
     // Check if the document was modified and respond accordingly.
     if (response.modifiedCount > 0) {
-        res.status(204).send(); // Respond with status 204 (no content) if successful.
+        res.status(200).json(contact);  // Respond with the updated contact.
     } else {
-        res.status(500).json(response.console.error || 'Some error occurred while updating the contact'); // Respond with status 500 if there was an error.
+        res.status(500).json('Some error occurred while updating the contact');
     }
 };
 
@@ -78,15 +78,15 @@ const deleteContact = async (req, res) => {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
-        name: req.body.name,
-        Ipaddress: req.body.Ipaddress
+        favoriteColor: req.body.favoriteColor,
+        birthday: req.body.birthday
     };
     // Replace this with a deletion command (this part seems incorrect for deletion).
-    const response = await mongodb.getDatabase().db().collection('contacts').replaceOne({ _id: contactId }, contact);
-    if (response.modifiedCount > 0) {
-        res.status(204).send(); // Respond with status 204 if successful.
+    const response = await mongodb.getDatabase().db().collection('contacts').deleteOne({ _id: contactId }, contact);
+    if (response.deletedCount > 0) {
+        res.status(204).send(); // Respond with status 204 (no content).
     } else {
-        res.status(500).json(response.console.error || 'Some error occurred while updating the contact'); // Respond with status 500 if there was an error.
+        res.status(500).json('Some error occurred while deleting the contact');
     }
 };
 
