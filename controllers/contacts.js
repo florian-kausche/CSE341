@@ -30,45 +30,61 @@ const getSingle = async (req, res) => {
 
 // Function to create or replace a contact in the database.
 const CreateContact = async (req, res) => {
-    const contactId = new ObjectId(req.params.id); // Create an ObjectId from the request parameter.
-    // Create a contact object using the request body data.
     const contact = {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
         favoriteColor: req.body.favoriteColor,
-        birthday: req.body.birthday
+        birthday: new Date(req.body.birthday)  // Ensure birthday is a Date object
     };
-    // Replace a document in the 'contacts' collection with the given contact object.
-    const response = await mongodb.getDatabase().collection('contacts').insertOne({ _id: contactId }, contact);
-    // Check if the operation was acknowledged and respond accordingly.
-    if (response.acknowledged) {
-        res.status(201).json(contact);  // Respond with status 201 (created).
-    } else {
-        res.status(500).json('Some error occurred while creating the contact');
+
+    try {
+        const response = await mongodb.getDatabase().collection('contacts').insertOne(contact);
+        
+        console.log(response);  // Log the response to debug
+
+        // Use response.insertedId for new MongoDB versions
+        if (response.acknowledged) {
+            const createdContact = { ...contact, _id: response.insertedId };
+            res.status(201).json(createdContact);  // Respond with the created contact.
+        } else {
+            res.status(500).json('Failed to create the contact');
+        }
+    } catch (error) {
+        res.status(500).json(`Error: ${error.message}`);
     }
 };
 
+
+
 // Function to update an existing contact.
 const UpdateContact = async (req, res) => {
-    const contactId = new ObjectId(req.params.id); // Create an ObjectId from the request parameter.
-    // Create a contact object with updated data from the request body.
+    const contactId = new ObjectId(req.params.id);
+
     const contact = {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
         favoriteColor: req.body.favoriteColor,
         birthday: req.body.birthday
-    };
-    // Replace a document in the 'contacts' collection with the updated contact object.
-    const response = await mongodb.getDatabase().collection('contacts').updateOne({ $set: contact } );
-    // Check if the document was modified and respond accordingly.
-    if (response.modifiedCount > 0) {
-        res.status(200).json(contact);  // Respond with the updated contact.
-    } else {
-        res.status(500).json('Some error occurred while updating the contact');
+    };  
+
+    try {
+        const response = await mongodb.getDatabase().collection('contacts').updateOne(
+            { _id: contactId }, // Filter to find the contact by ID
+            { $set: contact }   // Update operation
+        );
+
+        if (response.matchedCount > 0) {
+            res.status(200).json(contact);  // Respond with the updated contact.
+        } else {
+            res.status(404).json('Contact not found');
+        }
+    } catch (error) {
+        res.status(500).json(`Error: ${error.message}`);
     }
 };
+
 
 // Function to delete a contact (the code provided seems to be a copy of the update function).
 const deleteContact = async (req, res) => {

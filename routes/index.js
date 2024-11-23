@@ -1,11 +1,12 @@
 const express = require('express');
-require('dotenv').config(); // Loads environment variables
-
 const router = express.Router();
+const contactsController = require('../controllers/contacts');
 
-// Define routes here
-router.get('/', (req, res) => res.send('Hello World'));
-
-router.use('/contacts', require('./contacts')); // Load 'contacts' routes
+// Define routes
+router.get('/contacts', contactsController.getAll);
+router.get('/contacts/:id', contactsController.getSingle);
+router.post('/contacts', contactsController.CreateContact);
+router.put('/contacts/:id', contactsController.UpdateContact);
+router.delete('/contacts/:id', contactsController.deleteContact);
 
 module.exports = router;
