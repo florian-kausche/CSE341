@@ -35,18 +35,13 @@ const CreateContact = async (req, res) => {
         lastName: req.body.lastName,
         email: req.body.email,
         favoriteColor: req.body.favoriteColor,
-        birthday: new Date(req.body.birthday)  // Ensure birthday is a Date object
+        birthdate: req.body.birthdate  // Ensure this matches your request field name
     };
 
     try {
         const response = await mongodb.getDatabase().collection('contacts').insertOne(contact);
-        
-        console.log(response);  // Log the response to debug
-
-        // Use response.insertedId for new MongoDB versions
         if (response.acknowledged) {
-            const createdContact = { ...contact, _id: response.insertedId };
-            res.status(201).json(createdContact);  // Respond with the created contact.
+            res.status(201).json({ id: response.insertedId, ...contact });
         } else {
             res.status(500).json('Failed to create the contact');
         }
@@ -54,7 +49,6 @@ const CreateContact = async (req, res) => {
         res.status(500).json(`Error: ${error.message}`);
     }
 };
-
 
 
 // Function to update an existing contact.
@@ -66,7 +60,7 @@ const UpdateContact = async (req, res) => {
         lastName: req.body.lastName,
         email: req.body.email,
         favoriteColor: req.body.favoriteColor,
-        birthday: req.body.birthday
+        birthdate: req.body.birthdate 
     };  
 
     try {
@@ -85,24 +79,19 @@ const UpdateContact = async (req, res) => {
     }
 };
 
-
-// Function to delete a contact (the code provided seems to be a copy of the update function).
+// Function to delete a contact.
 const deleteContact = async (req, res) => {
     const contactId = new ObjectId(req.params.id); // Create an ObjectId from the request parameter.
-    // Create a contact object (this isn't needed for deletion).
-    const contact = {
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        email: req.body.email,
-        favoriteColor: req.body.favoriteColor,
-        birthday: req.body.birthday
-    };
-    // Replace this with a deletion command (this part seems incorrect for deletion).
-    const response = await mongodb.getDatabase().db().collection('contacts').deleteOne({ _id: contactId }, contact);
-    if (response.deletedCount > 0) {
-        res.status(204).send(); // Respond with status 204 (no content).
-    } else {
-        res.status(500).json('Some error occurred while deleting the contact');
+
+    try {
+        const response = await mongodb.getDatabase().collection('contacts').deleteOne({ _id: contactId });
+        if (response.deletedCount > 0) {
+            res.status(204).send(); // Respond with status 204 (no content).
+        } else {
+            res.status(404).json('Contact has been deleted');
+        }
+    } catch (error) {
+        res.status(500).json(`Error: ${error.message}`);
     }
 };
 

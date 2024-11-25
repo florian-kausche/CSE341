@@ -1,7 +1,11 @@
 const express = require('express');
 const mongodb = require('./data/database');  // Import the 'database' module.
+const bodyParser = require('body-parser');
 
 const app = express();
+
+app.use(bodyParser.json());
+
 const port = process.env.PORT || 3000;
 
 // Use express' built-in JSON parser middleware
