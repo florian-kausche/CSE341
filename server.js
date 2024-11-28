@@ -1,4 +1,6 @@
 const express = require('express');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger-output.json');
 const mongodb = require('./data/database');  // Import the 'database' module.
 const bodyParser = require('body-parser');
 
@@ -10,6 +12,10 @@ const port = process.env.PORT || 3000;
 
 // Use express' built-in JSON parser middleware
 app.use(express.json());
+
+// Add these lines before your route definitions
+app.use('/api-docs', swaggerUi.serve);
+app.get('/api-docs', swaggerUi.setup(swaggerDocument));
 
 // Use middleware for routes defined in './routes'
 app.use('/', require('./routes'));
