@@ -1,34 +1,30 @@
 const express = require('express');
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger-output.json');
-const mongodb = require('./data/database');  // Import the 'database' module.
-const bodyParser = require('body-parser');
+const mongodb = require('./data/database'); // Import the 'database' module
+const bodyParser = require('body-parser'); // Optional, if required
+require('dotenv').config(); // Load environment variables (optional if using .env)
 
 const app = express();
 
-app.use(bodyParser.json());
-
-const port = process.env.PORT || 3000;
-
-// Use express' built-in JSON parser middleware
+// Use Express's built-in JSON parser middleware (body-parser is redundant here)
 app.use(express.json());
 
-// Add these lines before your route definitions
-app.use('/api-docs', swaggerUi.serve);
-app.get('/api-docs', swaggerUi.setup(swaggerDocument));
-
-// Use middleware for routes defined in './routes'
+// Middleware for routes defined in './routes'
 app.use('/', require('./routes'));
+
+// Get the port from the environment variable or default to 3000
+const port = process.env.PORT || 4056;
 
 // Initialize database connection and start the server
 const startServer = async () => {
   try {
-    await mongodb.initDb();  // Assuming initDb is promisified or changed to return a promise.
+    // Ensure MongoDB is initialized
+    await mongodb.initDb(); // Assuming initDb returns a promise
     app.listen(port, () => {
-      console.log(`Database connected and server is running on port ${port}`);
+      console.log(`Server is running on http://0.0.0.0:${port}`);
     });
   } catch (err) {
-    console.log('Failed to connect to the database:', err);
+    console.error('Failed to connect to the database:', err);
+    process.exit(1); // Exit with failure if the database doesn't connect
   }
 };
 

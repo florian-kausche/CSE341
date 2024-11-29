@@ -4,6 +4,7 @@
         "Autogen",
         "Ipaddress",
         "Kissi",
-        "Kofi"
+        "Kofi",
+        "onrender"
     ]
 }

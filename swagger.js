@@ -5,7 +5,7 @@ const doc = {
     title: 'Contacts API',
     description: 'API for managing contacts'
   },
-  host: 'yhttps://cse341-project-fzn3.onrender.com',  //Render Url
+  host: process.env.SWAGGER_HOST || 'cse341-project-fzn3.onrender.com', // Dynamic host
   schemes: ['https']
 };
 
