@@ -12,7 +12,7 @@ app.use(express.json());
 app.use('/', require('./routes'));
 
 // Get the port from the environment variable or default to 3000
-const port = process.env.PORT || 4056;
+const port = process.env.PORT || 3000;
 
 // Initialize database connection and start the server
 const startServer = async () => {
