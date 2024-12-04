@@ -1,1 +1,4 @@
-/node_modules
+# Ignore node_modules
+node_modules/
+# Ignore log files
+*.log
